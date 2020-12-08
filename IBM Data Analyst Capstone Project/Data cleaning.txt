@@ -1,0 +1,60 @@
+import pandas as pd
+
+#Load the dataset into a dataframe.
+df = pd.read_csv("https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBM-DA0321EN-SkillsNetwork/LargeData/m1_survey_data.csv")
+
+#Find how many duplicate rows exist in the dataframe.
+df1 = df[df.duplicated()] 
+df1
+
+#Removing duplicates
+df=df.drop_duplicates()
+
+#reset_index
+df.reset_index(drop=True, inplace=True)
+df
+
+#Finding Missing values
+df.isnull()
+
+#Find out how many rows are missing in the column 'WorkLoc'
+print(df['Country'].isnull().sum())
+
+#Imputing missing values
+df['ConvertedComp'].value_counts(ascending=True)
+
+#Identify the value that is most frequent (majority) in the WorkLoc column.
+df.groupby(['WorkLoc']).count().max()
+
+#Impute (replace) all the empty rows in the column WorkLoc with the value that you have identified as majority.
+i=6806
+df['WorkLoc'].fillna(i, inplace=True)
+
+#Verify if imputing was successful.
+print(df['WorkLoc'].isnull().sum())
+
+Normalizing data
+
+#List out the various categories in the column 'CompFreq'
+import numpy as np
+df.groupby(['CompFreq']).count().transpose().max()
+df['CompFreq'].replace(np.nan,'Monthly',inplace=True)
+df['CompFreq']
+df['CompTotal'].interpolate(method='linear',direction='forward',inplace=True)
+df[['CompTotal','CompFreq']]
+
+#Create a new column named 'NormalizedAnnualCompensation'. Use the hint given below if needed.
+conditions=[
+    df['CompFreq']=='Yearly',
+    df['CompFreq']=='Monthly',
+    df['CompFreq']=='Weekly'
+]
+outputs=[
+    df['CompTotal'],df['CompTotal']*12,df['CompTotal']*52
+]
+df4= np.select(conditions, outputs, 'Other')
+df5["NormalizedAnnualCompensation"]=pd.DataFrame(df4)
+df5["NormalizedAnnualCompensation"]=df5["NormalizedAnnualCompensation"].astype("float")
+df5["NormalizedAnnualCompensation"].dtype
+df6=pd.DataFrame(df5["NormalizedAnnualCompensation"])
+df6
