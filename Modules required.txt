@@ -1,0 +1,14 @@
+1.1 Robot / Receiver Electronics :
+- Arduino UNO
+- L293D 4 Geared Motor Driver Module
+- Pololu 50:1 35D Metal Gearbox
+- HC05 Bluetooth Module
+- 4 Cell Lithium Battery Pack (2x)
+- Switch, DC Jack, Wires, Solder
+1.2 Transmitter Electronics
+- App Designer
+- Java IDE
+- Mobile App
+1.3 Camera System
+- ESP32-CAM module
+- FTDI 232RL / TTL Connector
