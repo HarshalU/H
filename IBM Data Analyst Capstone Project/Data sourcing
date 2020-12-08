@@ -1,4 +1,4 @@
-# Through Tables
+# Through Tables (didnt use this for the project but known knowledge) 
 # importing the libraries
 from bs4 import BeautifulSoup
 import requests
