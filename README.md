@@ -1,5 +1,5 @@
 My github repostiory
 
-Consists of all the proects i have worked on and made.
+Consists of all the projects i have worked on and made.
 
 -- Harshal.U.
