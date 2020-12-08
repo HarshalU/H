@@ -1,0 +1,151 @@
+#Plot the histogram for the column ConvertedComp.
+df["ConvertedComp"].plot(kind="hist")
+
+#How many responders identified themselves only as a Man?
+df1=df.loc[df['Gender']=='Man']
+df1['Gender'].count()
+
+#Find out the median ConvertedComp of responders identified themselves only as a Woman?
+df2=df.loc[df['Gender']=='Woman']
+df2['ConvertedComp'].median()
+
+#Find out if outliers exist in the column ConvertedComp using a box plot?
+df['ConvertedComp'].plot(kind="box")
+
+#Find out the Inter Quartile Range for the column ConvertedComp.
+Q1 = df['ConvertedComp'].quantile(0.25)
+Q3 = df['ConvertedComp'].quantile(0.75)
+Q1
+Q3
+IQR = Q3 - Q1
+IQR
+
+#Find out the upper and lower bounds.
+lower_bound = Q1 - (1.5 *IQR )
+upper_bound = Q3 + (1.5 * IQR)
+print(lower_bound,
+upper_bound)
+
+#Identify how many outliers are there in the ConvertedComp column.
+((df['ConvertedComp']< (Q1 - 1.5 * IQR)) | (df['ConvertedComp']> (Q3 + 1.5 * IQR))).sum()
+
+
+#Create a new dataframe by removing the outliers from the ConvertedComp column.
+df1 = df[((df['ConvertedComp'] < lower_bound) |(df['ConvertedComp'] > upper_bound))]
+df1['ConvertedComp'].plot(kind="box")
+df1['ConvertedComp'].mean()
+
+Correlation
+#Find the correlation between Age and all other numerical columns.
+import seaborn as sns
+from scipy import stats
+sns.regplot(x='CompTotal',y='Age',data=df)
+plt.ylim(0,)
+
+NOT PART OF THE PROJECT BUT KNOWN KNOWLEDGE ON DATA WRANGLING
+
+#Linear Regression
+#single
+from sklearn.linear_model import LinearRegression
+lm = LinearRegression()
+lm
+X = df[['highway-mpg']]
+Y = df['price']
+Yhat=lm.predict(X)
+Yhat[0:5]   
+lm.intercept_
+lm.coef_
+lm.score(X, Y)
+mean_squared_error(df['price'], p(x))
+
+#multiple
+Z = df[['horsepower', 'curb-weight', 'engine-size', 'highway-mpg']]
+lm.fit(Z, df['price'])
+Yhat=lm.predict(X)
+lm.intercept_
+lm.coef_
+lm.score(Z, df['price'])
+
+#Regression plot
+width = 12
+height = 10
+plt.figure(figsize=(width, height))
+sns.regplot(x="highway-mpg", y="price", data=df)
+plt.ylim(0,)
+
+#Residual plot
+width = 12
+height = 10
+plt.figure(figsize=(width, height))
+sns.residplot(df['highway-mpg'], df['price'])
+plt.show()
+
+#multiple Regression distance plot
+plt.figure(figsize=(width, height))
+
+
+ax1 = sns.distplot(df['price'], hist=False, color="r", label="Actual Value")
+sns.distplot(Y_hat, hist=False, color="b", label="Fitted Values" , ax=ax1)
+
+
+plt.title('Actual vs Fitted Values for Price')
+plt.xlabel('Price (in dollars)')
+plt.ylabel('Proportion of Cars')
+
+plt.show()
+plt.close()
+
+
+#Polynomial Regression
+
+def PlotPolly(model, independent_variable, dependent_variabble, Name):
+    x_new = np.linspace(15, 55, 100)
+    y_new = model(x_new)
+
+    plt.plot(independent_variable, dependent_variabble, '.', x_new, y_new, '-')
+    plt.title('Polynomial Fit with Matplotlib for Price ~ Length')
+    ax = plt.gca()
+    ax.set_facecolor((0.898, 0.898, 0.898))
+    fig = plt.gcf()
+    plt.xlabel(Name)
+    plt.ylabel('Price of Cars')
+
+    plt.show()
+    plt.close()
+
+x = df['highway-mpg']
+y = df['price']
+
+f = np.polyfit(x, y, 3)
+p = np.poly1d(f)
+print(p)
+
+PlotPolly(p, x, y, 'highway-mpg')
+np.polyfit(x, y, 3)
+r_squared = r2_score(y, p(x))
+
+#Pipelines
+
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+Input=[('scale',StandardScaler()), ('polynomial', PolynomialFeatures(include_bias=False)), ('model',LinearRegression())]
+pipe=Pipeline(Input)
+pipe
+pipe.fit(Z,y)
+ypipe=pipe.predict(Z)
+ypipe[0:4]
+
+
+#Prediction and Decision Making
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+%matplotlib inline 
+new_input=np.arange(1, 100, 1).reshape(-1, 1)
+lm.fit(X, Y)
+lm
+yhat=lm.predict(new_input)
+yhat[0:5]
+plt.plot(new_input, yhat)
+plt.show()
